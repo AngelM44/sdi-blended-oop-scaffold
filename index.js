@@ -4,7 +4,7 @@ class Member {
   constructor(name) {
     this.#BankAccount = BankAccount
     this.name = name
-}
+  }
 }
 class BankAccount {
   #balance
@@ -14,12 +14,11 @@ class BankAccount {
     this.#balance = 0;
     this.#transactions = [];
     this.member = member
+    // if (this.member == null) {
+    //   throw new Error('No member found');
+    // }
   }
-  member(){
-    if(this.name == null) {
-      throw new Error('No member found');
-     }
-  }
+
   credit(addMoney) {
     this.#balance += addMoney;
     this.#transactions.push(addMoney);
@@ -58,7 +57,7 @@ class CheckingAccount extends BankAccount {
 
   }
   debit(takeMoney) {
-    console.log("balance before debit", this.getBalance)
+
     // does not allow overdraft
     if (this.getBalance - takeMoney < 0) {
       return "You have insufficient funds to perform that action";
@@ -66,7 +65,7 @@ class CheckingAccount extends BankAccount {
       super.debit(takeMoney)
     }
     // $40 penalty if balance is less than $50
-    console.log("balance after debit", this.getBalance)
+
     if (this.getBalance < 50) {
       super.debit(40)
     }
@@ -75,24 +74,41 @@ class CheckingAccount extends BankAccount {
 }
 class SavingsAccount extends BankAccount {
   #linkedCheckingAccount
-  
-  constructor(member) {
+  #balance
+  #transactions
+  constructor(member, balance, transactions) {
     super(member)
     this.member = member
+    this.#balance = balance
+    this.#transactions = []
   }
-  transfer(){
+
+
+
+  transfer(amount) {
     if (this.#linkedCheckingAccount == null) {
       throw new Error('No linked account');
-  } 
+    } else {
+      this.debit(amount)
+      this.#linkedCheckingAccount.credit(amount)
+      // console.log("length", this.transactions.length)
+      // if (this.transactions.length > 10) {
+      //   this.debit(50)
+
+      // }
+    }
   }
+
+
 
   // console.log(SavingsAccount)
   linkAccount(acct) {
     //super(checkingAccount)
     this.#linkedCheckingAccount = acct;
-   
-    }
   }
+
+
+}
 
 
 const distributeEvenly = () => { };
