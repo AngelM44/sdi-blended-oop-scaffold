@@ -4,14 +4,18 @@ class Member {
     this.#bankAccount = BankAccount
     this.name = name
   }
+  //   if(name === "") {
+  //   return 'Member not found!'
+  // }
 }
 class BankAccount {
   #balance
   #transactions;
 
-  constructor(balance) {
+  constructor(member, balance) {
     this.#balance = 0;
     this.#transactions = [];
+    this.member = member
   }
   credit(addMoney) {
     this.#balance += addMoney;
@@ -46,8 +50,9 @@ class BankAccount {
 class CheckingAccount extends BankAccount {
   #balance
 
-  constructor(balance) {
-    super(balance)
+  constructor(member, balance) {
+    super(balance, member)
+
   }
   debit(takeMoney) {
     console.log("balance before debit", this.getBalance)
@@ -68,10 +73,19 @@ class CheckingAccount extends BankAccount {
 class SavingsAccount extends BankAccount {
   #linkedCheckingAccount
   constructor(member) {
-    this.#linkedCheckingAccount = linkedCheckingAccount
+    super(member)
+    this.member = member
   }
-  linkedAccount(CheckingAccount) {
-    this.linkedCheckingAccount = CheckingAccount
+
+  // console.log(SavingsAccount)
+  linkAccount(Checking) {
+    super(checkingAccount)
+    this.#linkedCheckingAccount = CheckingAccount.member(Checking)
+    console.log("linked account", this.#linkedCheckingAccount)
+    // throw error if no linked account
+    if (this.#linkedCheckingAccount == null) {
+      return "account not found"
+    }
   }
 }
 const distributeEvenly = () => { };
